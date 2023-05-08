@@ -1,37 +1,70 @@
 package sk.stuba.fei.uim.oop.assignment3.product.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
+import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 
 import java.util.List;
 
 @Service
 public class ProductService implements IProductService{
 
-    @Override
-    public List<Product> getList() {
-        return null;
-    }
+    @Autowired
+    private ProductRepository repository;
 
     @Override
-    public Product create(ProductRequest product) {
-        return null;
+    public List<Product> getList() {
+        return this.repository.findAll();
     }
 
     @Override
     public Product getRetrieve(int id) {
-        return null;
+        Product product = this.repository.findById(id).orElseThrow();
+        return product;
     }
 
     @Override
+    public Product create(ProductRequest request) {
+        Product product = new Product();
+        product.setName(request.getName());
+        product.setPrice(request.getPrice());
+        product.setUnit(request.getUnit());
+        product.setDescription(request.getDescription());
+        product.setAmount(request.getAmount());
+
+        return this.repository.save(product);
+
+    }
+
+
+    @Override
     public Product update(ProductRequest request, int id) {
-        return null;
+        Product product = getRetrieve(id);
+
+        if(request.getName() != null) {
+            product.setName(request.getName());
+        }
+        if(request.getAmount() >= 0) {
+            product.setAmount(request.getAmount());
+        }
+        if(request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+        if(request.getPrice() >= 0) {
+            product.setPrice(request.getPrice());
+        }
+        if(request.getUnit() != null) {
+            product.setUnit(request.getUnit());
+        }
+
+        return this.repository.save(product);
     }
 
     @Override
     public void delete(int id) {
-
+        this.repository.deleteById(id);
     }
 }
