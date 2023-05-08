@@ -12,10 +12,10 @@ import sk.stuba.fei.uim.oop.assignment3.product.service.IProductService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@RestController
+
 @RequestMapping("/product")
+@RestController
 public class ProductController {
 
     private IProductService service;
@@ -45,29 +45,29 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getRetrieve(@PathVariable("id") int id) {
+    public ProductResponse getRetrieve(@PathVariable("id") Long id) {
         Product product = this.service.getRetrieve(id);
         return new ProductResponse(product);
     }
 
     @PutMapping("/{id}")
-    public ProductResponse update(@RequestBody ProductRequest request, @PathVariable("id") int id) {
+    public ProductResponse update(@RequestBody ProductRequest request, @PathVariable("id") Long id) {
         Product product = this.service.update(request, id);
         return new ProductResponse(product);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") int id) {
+    public void delete(@PathVariable("id") Long id) {
         this.service.delete(id);
     }
 
     @GetMapping("/{id}/amount")
-    public Amount getAmount(@PathVariable("id") int id) {
+    public Amount getAmount(@PathVariable("id") Long id) {
         return this.service.getAmount(id);
     }
 
     @PostMapping("/{id}/amount")
-    public Amount addAmount(@RequestBody ProductRequest request, @PathVariable("id") int id){
+    public Amount addAmount(@RequestBody ProductRequest request, @PathVariable("id") Long id){
         return this.service.addAmount(request, id);
     }
 }

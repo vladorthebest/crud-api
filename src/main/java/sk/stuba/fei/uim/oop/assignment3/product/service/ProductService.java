@@ -9,12 +9,17 @@ import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ProductService implements IProductService{
 
-    @Autowired
     private ProductRepository repository;
+
+    @Autowired
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<Product> getList() {
@@ -22,7 +27,7 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Product getRetrieve(int id) {
+    public Product getRetrieve(Long id) {
         Product product = this.repository.findById(id).orElseThrow();
         return product;
     }
@@ -37,12 +42,11 @@ public class ProductService implements IProductService{
         product.setAmount(request.getAmount());
 
         return this.repository.save(product);
-
     }
 
 
     @Override
-    public Product update(ProductRequest request, int id) {
+    public Product update(ProductRequest request, Long id) {
         Product product = getRetrieve(id);
 
         if(request.getName() != null) {
@@ -57,18 +61,20 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public void delete(int id) {
-        this.repository.deleteById(id);
+    public void delete(Long id) {
+        Product product = getRetrieve(id);
+        if (product != null)
+            this.repository.delete(product);
     }
 
     @Override
-    public Amount getAmount(int id) {
+    public Amount getAmount(Long id) {
         Product product = this.repository.findById(id).orElseThrow();
         return new Amount(product.getAmount());
     }
 
     @Override
-    public Amount addAmount(ProductRequest request, int id) {
+    public Amount addAmount(ProductRequest request, Long id) {
         Product product = this.repository.findById(id).orElseThrow();
         Long newAmount = product.getAmount() + request.getAmount();
         product.setAmount(newAmount);

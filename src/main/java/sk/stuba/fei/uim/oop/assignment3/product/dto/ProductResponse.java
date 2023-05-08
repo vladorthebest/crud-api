@@ -1,9 +1,14 @@
 package sk.stuba.fei.uim.oop.assignment3.product.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 
+
+@Getter
+@Setter
 public class ProductResponse {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private Long amount;
