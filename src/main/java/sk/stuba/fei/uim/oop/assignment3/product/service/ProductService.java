@@ -4,6 +4,7 @@ package sk.stuba.fei.uim.oop.assignment3.product.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
+import sk.stuba.fei.uim.oop.assignment3.product.model.Amount;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 
@@ -58,5 +59,19 @@ public class ProductService implements IProductService{
     @Override
     public void delete(int id) {
         this.repository.deleteById(id);
+    }
+
+    @Override
+    public Amount getAmount(int id) {
+        Product product = this.repository.findById(id).orElseThrow();
+        return new Amount(product.getAmount());
+    }
+
+    @Override
+    public Amount addAmount(ProductRequest request, int id) {
+        Product product = this.repository.findById(id).orElseThrow();
+        Long newAmount = product.getAmount() + request.getAmount();
+        product.setAmount(newAmount);
+        return new Amount(product.getAmount());
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductResponse;
+import sk.stuba.fei.uim.oop.assignment3.product.model.Amount;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.service.IProductService;
 
@@ -60,4 +61,13 @@ public class ProductController {
         this.service.delete(id);
     }
 
+    @GetMapping("/{id}/amount")
+    public Amount getAmount(@PathVariable("id") int id) {
+        return this.service.getAmount(id);
+    }
+
+    @PostMapping("/{id}/amount")
+    public Amount addAmount(@RequestBody ProductRequest request, @PathVariable("id") int id){
+        return this.service.addAmount(request, id);
+    }
 }

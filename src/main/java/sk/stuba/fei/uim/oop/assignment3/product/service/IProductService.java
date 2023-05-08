@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.assignment3.product.service;
 
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
+import sk.stuba.fei.uim.oop.assignment3.product.model.Amount;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface IProductService {
         Product getRetrieve(int id);
         Product update(ProductRequest request, int id);
         void delete(int id);
+        Amount getAmount(int id);
+        Amount addAmount(ProductRequest request, int id);
 }
