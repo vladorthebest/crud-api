@@ -22,7 +22,6 @@ public class ProductController {
 
     @Autowired
     public ProductController(IProductService service){
-
         this.service = service;
     }
 
