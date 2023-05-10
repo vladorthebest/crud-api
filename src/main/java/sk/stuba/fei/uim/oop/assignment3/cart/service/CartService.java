@@ -1,28 +1,75 @@
 package sk.stuba.fei.uim.oop.assignment3.cart.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import sk.stuba.fei.uim.oop.assignment3.cart.model.Cart;
 import sk.stuba.fei.uim.oop.assignment3.cart.model.ProductCart;
+import sk.stuba.fei.uim.oop.assignment3.cart.repository.CartRepository;
+import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
+import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 
-public class CaetService implements ICartService{
 
-    
+@Service
+public class CartService implements ICartService{
+
+    private CartRepository repository;
+    private ProductRepository productRepository;
+
+    @Autowired
+    public CartService(CartRepository repository, ProductRepository productRepository) {
+        this.repository = repository;
+        this.productRepository = productRepository;
+    }
+
     @Override
     public Cart create() {
-        return null;
+        return this.repository.save(new Cart());
     }
 
     @Override
     public Cart getRetrieve(Long id) {
-        return null;
+        Cart cart = this.repository.findById(id).orElseThrow();
+        return cart;
     }
 
     @Override
     public void delete(Long id) {
-
+        Cart cart = this.repository.findById(id).orElseThrow();
+        if (cart != null)
+            this.repository.delete(cart);
     }
 
     @Override
-    public Cart addProduct(ProductCart product, Long id) {
-        return null;
+    public Cart addProduct(ProductCart productAdd, Long id) {
+        Cart cart = this.repository.findById(id).orElseThrow();
+
+        if(cart.isPayed()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        Product productStock = productRepository.findById(productAdd.getProductId()).orElseThrow();
+
+        if(productStock.getAmount() < productAdd.getAmount()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        boolean added = false;
+        for(ProductCart productInCart: cart.getShoppingList()){
+            if(productInCart.getProductId() == productAdd.getProductId()){
+                productAdd.setAmount(productInCart.getAmount() + productAdd.getAmount());
+                added = true;
+                break;
+            }
+        }
+        if (added) {
+            cart.getShoppingList().add(productAdd);
+        }
+
+        productStock.setAmount(productStock.getAmount() - productAdd.getAmount());
+        this.productRepository.save(productStock);
+        this.repository.save(cart);
+        return cart;
     }
 }
