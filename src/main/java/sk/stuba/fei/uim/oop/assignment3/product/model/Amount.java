@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 public class Amount {
-    Long amount;
+    private Long amount;
 
     public Amount(Long amount) {
         this.amount = amount;
