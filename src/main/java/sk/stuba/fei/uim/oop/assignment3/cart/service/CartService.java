@@ -58,12 +58,12 @@ public class CartService implements ICartService{
         boolean added = false;
         for(ProductCart productInCart: cart.getShoppingList()){
             if(productInCart.getProductId() == productAdd.getProductId()){
-                productAdd.setAmount(productInCart.getAmount() + productAdd.getAmount());
+                productInCart.setAmount(productInCart.getAmount() + productAdd.getAmount());
                 added = true;
                 break;
             }
         }
-        if (added) {
+        if (!added) {
             cart.getShoppingList().add(productAdd);
         }
 
@@ -71,5 +71,24 @@ public class CartService implements ICartService{
         this.productRepository.save(productStock);
         this.repository.save(cart);
         return cart;
+    }
+
+    @Override
+    public String payCart(Long id) {
+        Cart cart = this.repository.findById(id).orElseThrow();
+
+        if(cart.isPayed()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        double sum = 0;
+        cart.setPayed(true);
+        this.repository.save(cart);
+        for(ProductCart productInCart: cart.getShoppingList()){
+            Product product = this.productRepository.findById(productInCart.getProductId()).orElseThrow();
+            sum += product.getPrice() * productInCart.getAmount();
+        }
+
+        return Double.toString(sum);
     }
 }

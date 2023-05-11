@@ -8,4 +8,5 @@ public interface ICartService {
     Cart getRetrieve(Long id);
     void delete(Long id);
     Cart addProduct(ProductCart product, Long id);
+    String payCart(Long id);
 }

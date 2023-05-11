@@ -45,4 +45,9 @@ public class CartController {
         Cart cart = this.service.addProduct(request,id);
         return new CartResponse(cart);
     }
+
+    @GetMapping("/{id}/pay")
+    public String payCart(@PathVariable("id") Long id) {
+        return this.service.payCart(id);
+    }
 }
