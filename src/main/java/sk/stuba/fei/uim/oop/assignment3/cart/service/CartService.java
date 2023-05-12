@@ -14,14 +14,11 @@ import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 @Service
 public class CartService implements ICartService{
 
+    @Autowired
     private CartRepository repository;
+    @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    public CartService(CartRepository repository, ProductRepository productRepository) {
-        this.repository = repository;
-        this.productRepository = productRepository;
-    }
 
     @Override
     public Cart create() {
@@ -37,8 +34,8 @@ public class CartService implements ICartService{
     @Override
     public void delete(Long id) {
         Cart cart = this.repository.findById(id).orElseThrow();
-        if (cart != null)
-            this.repository.delete(cart);
+
+        this.repository.delete(cart);
     }
 
     @Override

@@ -15,12 +15,8 @@ import sk.stuba.fei.uim.oop.assignment3.product.service.IProductService;
 @RequestMapping("/cart")
 @RestController
 public class CartController {
-    private ICartService service;
-
     @Autowired
-    public CartController(ICartService service){
-        this.service = service;
-    }
+    private ICartService service;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
