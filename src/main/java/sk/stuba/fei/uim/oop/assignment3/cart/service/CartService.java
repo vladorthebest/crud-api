@@ -74,7 +74,7 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public String payCart(Long id) {
+    public Double payCart(Long id) {
         Cart cart = this.repository.findById(id).orElseThrow();
 
         if(cart.isPayed()){
@@ -89,6 +89,6 @@ public class CartService implements ICartService{
             sum += product.getPrice() * productInCart.getAmount();
         }
 
-        return Double.toString(sum);
+        return sum;
     }
 }

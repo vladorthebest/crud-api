@@ -4,22 +4,15 @@ package sk.stuba.fei.uim.oop.assignment3.product.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
-import sk.stuba.fei.uim.oop.assignment3.product.model.Amount;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.repository.ProductRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ProductService implements IProductService{
-
-    private ProductRepository repository;
-
     @Autowired
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
-    }
+    private ProductRepository repository;
 
     @Override
     public List<Product> getList() {
@@ -47,7 +40,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Product update(ProductRequest request, Long id) {
-        Product product = getRetrieve(id);
+        Product product = this.repository.findById(id).orElseThrow();
 
         if(request.getName() != null) {
             product.setName(request.getName());
@@ -62,23 +55,23 @@ public class ProductService implements IProductService{
 
     @Override
     public void delete(Long id) {
-        Product product = getRetrieve(id);
-        if (product != null)
-            this.repository.delete(product);
-    }
-
-    @Override
-    public Amount getAmount(Long id) {
         Product product = this.repository.findById(id).orElseThrow();
-        return new Amount(product.getAmount());
+
+        this.repository.delete(product);
     }
 
     @Override
-    public Amount addAmount(ProductRequest request, Long id) {
+    public Long getAmount(Long id) {
+        Product product = this.repository.findById(id).orElseThrow();
+        return product.getAmount();
+    }
+
+    @Override
+    public Long addAmount(ProductRequest request, Long id) {
         Product product = this.repository.findById(id).orElseThrow();
         Long newAmount = product.getAmount() + request.getAmount();
         product.setAmount(newAmount);
         this.repository.save(product);
-        return new Amount(product.getAmount());
+        return product.getAmount();
     }
 }

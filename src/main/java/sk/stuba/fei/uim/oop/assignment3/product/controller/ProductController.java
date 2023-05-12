@@ -1,12 +1,11 @@
 package sk.stuba.fei.uim.oop.assignment3.product.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import sk.stuba.fei.uim.oop.assignment3.product.dto.AmountResponse;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductResponse;
-import sk.stuba.fei.uim.oop.assignment3.product.model.Amount;
 import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.service.IProductService;
 
@@ -18,16 +17,12 @@ import java.util.List;
 @RestController
 public class ProductController {
 
-    private IProductService service;
-
     @Autowired
-    public ProductController(IProductService service){
-        this.service = service;
-    }
+    private IProductService service;
 
     @GetMapping()
     public List<ProductResponse> getListProducts(){
-        ArrayList list = new ArrayList<ProductResponse>();
+        ArrayList<ProductResponse> list = new ArrayList<>();
 
         for(Product p : this.service.getList()){
             list.add(new ProductResponse(p));
@@ -61,12 +56,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/amount")
-    public Amount getAmount(@PathVariable("id") Long id) {
-        return this.service.getAmount(id);
+    public AmountResponse getAmount(@PathVariable("id") Long id) {
+        Long amount = this.service.getAmount(id);
+        return new AmountResponse(amount);
     }
 
     @PostMapping("/{id}/amount")
-    public Amount addAmount(@RequestBody ProductRequest request, @PathVariable("id") Long id){
-        return this.service.addAmount(request, id);
+    public AmountResponse addAmount(@RequestBody ProductRequest request, @PathVariable("id") Long id){
+        Long amount = this.service.addAmount(request, id);
+        return new AmountResponse(amount);
     }
 }

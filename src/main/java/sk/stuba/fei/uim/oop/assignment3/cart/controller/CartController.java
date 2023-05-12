@@ -48,6 +48,6 @@ public class CartController {
 
     @GetMapping("/{id}/pay")
     public String payCart(@PathVariable("id") Long id) {
-        return this.service.payCart(id);
+        return Double.toString(this.service.payCart(id));
     }
 }
