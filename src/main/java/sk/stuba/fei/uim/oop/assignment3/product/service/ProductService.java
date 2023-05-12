@@ -21,8 +21,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Product getRetrieve(Long id) {
-        Product product = this.repository.findById(id).orElseThrow();
-        return product;
+        return this.repository.findById(id).orElseThrow();
     }
 
     @Override

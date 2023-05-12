@@ -7,10 +7,7 @@ import sk.stuba.fei.uim.oop.assignment3.cart.dto.CartResponse;
 import sk.stuba.fei.uim.oop.assignment3.cart.model.Cart;
 import sk.stuba.fei.uim.oop.assignment3.cart.model.ProductCart;
 import sk.stuba.fei.uim.oop.assignment3.cart.service.ICartService;
-import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductRequest;
-import sk.stuba.fei.uim.oop.assignment3.product.dto.ProductResponse;
-import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
-import sk.stuba.fei.uim.oop.assignment3.product.service.IProductService;
+
 
 @RequestMapping("/cart")
 @RestController

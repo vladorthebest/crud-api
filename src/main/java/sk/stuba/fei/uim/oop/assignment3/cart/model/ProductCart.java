@@ -3,7 +3,6 @@ package sk.stuba.fei.uim.oop.assignment3.cart.model;
 import lombok.Getter;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.cart.dto.ProductCardRequest;
-import sk.stuba.fei.uim.oop.assignment3.product.model.Product;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

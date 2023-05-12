@@ -27,8 +27,7 @@ public class CartService implements ICartService{
 
     @Override
     public Cart getRetrieve(Long id) {
-        Cart cart = this.repository.findById(id).orElseThrow();
-        return cart;
+        return this.repository.findById(id).orElseThrow();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class CartService implements ICartService{
 
         boolean added = false;
         for(ProductCart productInCart: cart.getShoppingList()){
-            if(productInCart.getProductId() == productAdd.getProductId()){
+            if(productInCart.getProductId().equals(productAdd.getProductId())){
                 productInCart.setAmount(productInCart.getAmount() + productAdd.getAmount());
                 added = true;
                 break;
